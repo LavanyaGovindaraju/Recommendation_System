@@ -35,15 +35,21 @@ This project implements a recommendation system using collaborative filtering an
      ```
      pip install -r requirements.txt
      ```
+     
+3. **Extract Data**:
+   - Extract the data zip file into the `data` folder:
+     ```
+     unzip data/data.zip -d data/
+     ```
 
-3. **Run the Flask Application**:
+4. **Run the Flask Application**:
    - Start the Flask application to serve bundles through the API endpoint:
      ```
      python app.py
 
      ```
 
-4. **Using Docker**:
+5. **Using Docker**:
    - Alternatively, you can use Docker to containerize the Flask application:
      - Make sure you have Docker installed on your system.
      - Build the Docker image:
