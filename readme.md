@@ -65,8 +65,10 @@ A data-driven system designed to recommend product bundles using collaborative f
        docker run -p 5000:5000 bundle-api
        ```
 
-🚀 How to Use
-Launch the system from the command line to run the recommendation and price prediction logic:
+## 🚀 How to Use
+
+You can interact with the system either via the command line or by using the built-in API.
+---
 
 Run the `main.py` script with the following command-line arguments:
 
@@ -92,110 +94,85 @@ python main.py --collab_filter user --user_id 17850.0
 Make sure to replace `<product_id>` with the actual product ID you want to query. The endpoint will return a JSON response containing the bundle of products and the total bundle price.
 
 
-## Analysis of the Given Task
+### 📈 Solution Design & Rationale
 
-### Implement a solution of your choice for recommending product bundles e.g. rule-based, statistics, or ML-based solution. Please describe any reasoning behind your solution.
+---
 
-For recommending product bundles, an ML-based solution is highly effective due to its ability to learn from historical data and make predictions based on patterns it identifies. This approach can capture complex relationships between products that might not be apparent through rule-based or statistical methods alone.
+### 🧠 Recommendation Strategy
 
-#### Reasoning:
+A machine learning–based collaborative filtering approach is used to model user–product interactions. This allows for:
 
-* Personalization: ML models can learn user preferences over time, recommending bundles that are more likely to be of interest to individual users.
+- Capturing complex patterns in user behavior  
+- Scaling with data volume  
+- Automatically adapting to product trends  
 
-* Scalability: As the dataset grows, the model can adapt to new products and user behaviors without manual intervention.
+> **Note:** The current implementation uses **K-Nearest Neighbors (KNN)** due to its interpretability and simplicity.
 
-* Efficiency: By leveraging machine learning algorithms, the system can efficiently process large volumes of data to identify optimal bundles.
+---
 
-#### Note: Additionally, my prior experience includes working with ML algorithms such as KNN. Given the available resources, I chose to utilize this method.
+### 📊 Data Splitting Strategy
 
-### Provide a splitting to train and test datasets. Discuss possible different splitting criteria. What other splitting criteria would you choose if you could gather more features/data?
+The current system uses a **random train–test split**, which ensures diverse evaluation samples.
 
-#### Splitting Criteria:
+Alternative strategies to consider:
 
-1. Random Split: A common approach where the dataset is randomly divided into training and testing sets. This ensures that the model is tested on unseen data.
+- **Time-based split**: Useful for temporal datasets where real-time generalization is critical  
+- **User segments**: Enables A/B testing across user demographics  
+- **Product categories**: Helps validate performance within subdomains of the catalog  
 
-2. Time-based Split: If the data includes timestamps, splitting the dataset based on time can help the model learn from past data and test its performance on more recent data.
+---
 
-Alternative Splitting Criteria with More Features:
+### 🛒 Bundle Size Logic
 
-3. User Demographics: If available, splitting the dataset based on user demographics (age, location, etc.) can help in testing the model's performance across different user segments.
+The number of items in each recommended bundle can be tuned based on:
 
-4. Product Categories: Splitting based on product categories can be useful if the goal is to test the model's ability to recommend bundles within specific product lines.
+- **Business goals**: Revenue vs. user satisfaction  
+- **User preferences**: Short vs. long recommendation lists  
+- **Model metrics**: Precision, recall, and diversity  
+- **A/B testing outcomes**: Click-through rate and conversion insights  
 
-#### Note: I have chosen random split as it provides a straightforward and unbiased way to divide the data into training and testing sets, ensuring that the model's performance can be evaluated on diverse samples from the dataset.
+> **Default setting**: Recommends **10 products** per bundle
 
-### Discuss the size of the output list and how it can be decided per product
+---
 
-The size of our output list, which is essentially the number of items in our recommendation list, can be determined by a variety of factors that are crucial for optimizing user experience and achieving business goals.
+### 💰 Bundle Price Calculation
 
-1. Business Goals Alignment:
+Bundle price is calculated by summing the **unit prices** of all products in the recommendation list.
 
-* Determine the size of the recommendation list based on business objectives.
-* For revenue maximization, consider recommending a larger number of high-margin products.
-* For enhancing customer satisfaction, opt for a smaller, personalized selection.
+> **Note:** This logic can be extended to incorporate:
+> - Discount rules
+> - Price thresholds
+> - Promotional pricing schemes
 
-2. User Preferences Consideration:
+---
 
-* Tailor the size of the recommendation list to accommodate user preferences.
-* Some users may prefer longer lists with more options, while others may prefer shorter, focused lists.
+### 📊 Business Evaluation
 
-3. Model Performance Evaluation:
+To measure and communicate the impact of this system:
 
-* Assess recommendation model performance using metrics like precision, recall, and diversity of recommendations.
-* Adjust the size of the output list based on model performance and desired trade-offs.
+1. **Define KPIs**: e.g., conversion rate, cart size, revenue uplift  
+2. **Establish Baseline**: Compare with prior recommendation systems or manual bundling  
+3. **Run A/B Tests**: Benchmark model-enabled recommendations against a control group  
+4. **Analyze Results**:
+   - Visual performance reports
+   - Case studies of successful bundles
+   - Metric comparisons (e.g., +x% revenue)
 
-4. Experimentation and Testing:
+> **Current Result**: Model achieved an **RMSE of 0.0033** for price prediction during training
 
-* Conduct A/B tests to experiment with different list sizes.
-* Analyze user engagement metrics such as click-through rates, conversion rates, and revenue generated from recommended products.
+---
 
-5. Iterative Refinement:
+### 🔍 Price Prediction Details
 
-* Continuously refine the recommendation system based on experimentation results and user feedback.
-* Iterate on the size of the recommendation list to optimize user engagement and achieve business objectives.
+The regression model estimates **unit prices** based on existing features.
 
-#### Note: I have selected default value of 10 products to recommend
+To improve this capability, the following additional data would be beneficial:
 
-### Discuss/implement any price computation per bundle e.g. the sum of products’ prices
+- **Product metadata**: Category, brand, dimensions  
+- **Market data**: Trends, competitor pricing  
+- **User behavior**: Purchase history, segments  
+- **Temporal features**: Seasonality, discounts, or promotions  
 
-#### Define Bundles: 
-Determine which products are included in each bundle and specify the pricing rules for the bundle (e.g., fixed price, discounted price, percentage discount).
-
-#### Calculate Bundle Price: 
-For each bundle, calculate the total price based on the individual prices of the products included. You can apply any discounts or special pricing logic as needed.
-
-#### Note: For this implementation, I have used simple total sum of products price
-
-### How would you evaluate the business impact of the solution and share the outcome with the internal stakeholders?
-
-To evaluate the business impact of the solution and share the outcome with internal stakeholders, we can follow these steps:
-
-1. Define Key Performance Indicators (KPIs): Identify relevant KPIs that align with your business goals, such as revenue, conversion rate, customer satisfaction, and retention.
-
-2. Baseline Measurement: Establish a baseline measurement of the KPIs before implementing the recommendation system. This will serve as a benchmark for evaluating the impact of the solution.
-
-3. A/B Testing: Conduct A/B tests to compare the performance of the recommendation system with a control group. Randomly assign users to either the group receiving recommendations or the control group.
-
-4. Measure Impact: Monitor the KPIs for both groups over a defined period. Analyze the data to determine whether the recommendation system has a positive impact on the KPIs.
-
-5. Iterate and Optimize: Based on the results, iterate on the recommendation system to optimize its performance. Experiment with different algorithms, recommendation strategies, and list sizes to maximize the business impact.
-
-#### Sharing the Outcome:
-
-* Data Visualization: Use charts and graphs to visually represent the impact of the solution.
-* Case Studies: Share specific examples of successful bundle recommendations and their outcomes.
-* Quantitative Analysis: Provide a detailed analysis of the metrics collected to quantify the business impact.
-
-#### Note:  The model's performance evaluation has been based on the Root Mean Square Error (RMSE) score, with the model achieving an impressive RMSE score of 0.0033 during training.
-
-### Implement a regression model for the products’ prices (UnitPrice) prediction. Is the provided data sufficient to predict the price? What other data would you like to gather to improve your solution?
-
-The provided data might not be sufficient for accurate price prediction. Additional data that could improve the solution includes:
-
-* Product attributes (e.g., category, brand, weight, dimensions)
-* Market trends and economic indicators
-* Competitor prices and promotions
-* Customer demographics and purchasing behavior
 
 
 
