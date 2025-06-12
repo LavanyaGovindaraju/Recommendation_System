@@ -1,18 +1,22 @@
-# Recommendation System and Price Prediction
+#  🛍️ Recommendation System and Price Prediction
 
-This project implements a recommendation system using collaborative filtering and a regression model for price prediction. It consists of several modularized components:
+A data-driven system designed to recommend product bundles using collaborative filtering and predict product prices through regression modeling. The solution is designed for integration into e-commerce or retail platforms, supporting both API-based access and standalone batch predictions.
+---
 
-1. `data_processing.py`: Contains functions for loading, cleaning, and preprocessing the dataset.
-2. `collaborative_filtering.py`: Includes functions for training collaborative filtering algorithms, generating recommendations, and evaluating the model.
-3. `price_prediction.py`: Handles training and evaluation of the regression model for price prediction.
-4. `utils.py`: Contains utility functions used across different modules.
-5. `app.py`: Flask application for serving bundles through an API endpoint.
-6. `main.py`: Main script orchestrating the different components of the project.
+## 📦 Features
 
+- **Personalized Product Bundling** using collaborative filtering (user-based and item-based)
+- **Dynamic Price Prediction** for unit prices using regression models
+- **Flask-based API** for serving recommendations and bundle pricing
+- **Docker Support** for easy deployment
+- **Interactive CLI Interface** for testing and configuration
+- **Extensible Codebase** for experimenting with rule-based, statistical, or ML approaches
+
+---
 
 ## Setup
 
-1. **Create a Virtual Environment**:
+1. **Create a Virtual Environment**
    - Install Python 3.8 if you haven't already.
    - Open a terminal or command prompt.
    - Navigate to your project directory.
@@ -30,19 +34,19 @@ This project implements a recommendation system using collaborative filtering an
        source venv/bin/activate
        ```
 
-2. **Install Dependencies**:
+2. **Install Dependencies**
    - Once inside the virtual environment, install the required libraries using `requirements.txt`:
      ```
      pip install -r requirements.txt
      ```
      
-3. **Extract Data**:
+3. **Prepare the Data**
    - Extract the data zip file into the `data` folder:
      ```
      unzip data/data.zip -d data/
      ```
 
-4. **Run the Flask Application**:
+4. **Run the Flask  API Server**
    - Start the Flask application to serve bundles through the API endpoint:
      ```
      python app.py
@@ -61,7 +65,9 @@ This project implements a recommendation system using collaborative filtering an
        docker run -p 5000:5000 bundle-api
        ```
 
-## Usage
+🚀 How to Use
+Launch the system from the command line to run the recommendation and price prediction logic:
+
 Run the `main.py` script with the following command-line arguments:
 
 `--collab_filter`: Specify the type of collaborative filtering to use. Choose between 'user' for user-based collaborative filtering and 'item' for item-based collaborative filtering. Default is 'item'.
